@@ -18,9 +18,23 @@ function Card(content, game) {
     this.content = content
     this.value = content
     this.state = CardState.closed
-    this.templateClosed = `<div class="m-card-body closed"></div>`
-    this.templateOpen = `<div class="m-card-body opened"><img src="./images/${this.content}.svg" /></div>`
     this._id = Math.random() * (800 + 1)
+}
+
+Card.prototype.createCard = function() {
+    var _this = this
+    this.element = document.createElement('div')
+    this.element.classList.add('m-card')
+    this.element.innerHTML = `
+        <div class="m-card-body">
+            <div class="m-card-front">
+                <img src="./images/${this.content}.svg" />
+            </div>
+            <div class="m-card-back"></div>
+        </div>
+    `
+    this.element.addEventListener('click', _this.handleClick.bind(_this))
+    return this.element
 }
 
 Card.prototype.handleClick = function() {
@@ -29,20 +43,11 @@ Card.prototype.handleClick = function() {
     }
 }
 
-Card.prototype.createCard = function() {
-    var _this = this
-    this.element = document.createElement('div')
-    this.element.classList.add('m-card')
-    this.element.innerHTML = this.templateClosed
-    this.element.addEventListener('click', _this.handleClick.bind(_this))
-    return this.element
-}
-
 Card.prototype.showCard = function() {
     var _this = this
     var openedCard = this.game.state.openedCard
     this.game.state.openedCard = undefined
-    this.element.innerHTML = this.templateOpen
+    this.element.classList.toggle('hover')
     this.state = CardState.opened
     this.game.state.stepCount++
     this.game.element.stepCount.innerHTML = this.game.state.stepCount
@@ -68,7 +73,7 @@ Card.prototype.showCard = function() {
 
 Card.prototype.hideCard = function() {
     this.state = CardState.closed
-    this.element.innerHTML = this.templateClosed
+    this.element.classList.toggle('hover')
 }
 
 Card.prototype.controlMatching = function(value) {
@@ -91,14 +96,11 @@ MatchingCardGame.prototype.init = function() {
     var _this = this
     var cardElements = []
     for (let i = 0; i < this.options.count; i++) {
-        var card = new Card(cards[i], this)
-        var cardElement = card.createCard();
-        cardElements.push(card)
-        card._id
-        
-        var card = new Card(cards[i], this)
-        var cardElement = card.createCard();
-        cardElements.push(card)
+        for (let j = 0; j < 2; j++) {
+            var card = new Card(cards[i], this)
+            card.createCard();
+            cardElements.push(card)
+        }
     }
 
     var restartButton = document.createElement('button')
