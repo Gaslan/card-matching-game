@@ -1,0 +1,36 @@
+.app{
+    width: 100%;
+}
+
+.game-body{
+    width: 800px;
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.m-card{
+    width: 140px;
+    height: 160px;
+    padding: 10px;
+}
+
+.m-card-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 140px;
+    padding: 10px;
+    border: 2px solid #4bafc6;
+    border-radius: 6px;
+    box-shadow: inset 0 0px 0px 2px rgb(255 255 255), 0 1px 6px 1px rgba(75, 75, 75, .05);
+}
+
+.m-card-body.closed{
+    background: url(./images/morocco-blue.png) 0 0 repeat;
+}
+
+.m-card img{
+    width: 80%;
+}
